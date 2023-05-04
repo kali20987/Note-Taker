@@ -14,7 +14,7 @@ app.use(express.static('public'));
 app.use(clog);
 
 app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, './routes/index.js'))
+  res.sendFile(path.join(__dirname, '/routes/index.js'))
 );
 app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, './routes/notes.js'))
