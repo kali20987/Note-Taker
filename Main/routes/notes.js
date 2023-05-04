@@ -1,18 +1,18 @@
-const router = express.Router();
+const notes = document.getElementById('.note-textarea');
 const { v4: uuidv4 } = require('uuid');
 const {
   readFromFile,
   readAndAppend,
   writeToFile,
-} = require('../helpers/fsUtils');
+} = require('./helpers/fsUtils');
 
 
-router.get('/', (req, res) => {
+notes.get('/', (req, res) => {
   readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
 
-router.get('/:note_id', (req, res) => {
+notes.get('/:note_id', (req, res) => {
   const noteId = req.params.note_id;
   readFromFile('./db/db.json')
     .then((data) => JSON.parse(data))
@@ -25,7 +25,7 @@ router.get('/:note_id', (req, res) => {
 });
 
 
-router.delete('/:note_id', (req, res) => {
+notes.delete('/:note_id', (req, res) => {
   const noteId = req.params.note_id;
   readFromFile('./db/db.json')
     .then((data) => JSON.parse(data))
@@ -42,10 +42,10 @@ router.delete('/:note_id', (req, res) => {
 });
 
 
-router.post('/', (req, res) => {
+notes.post('/', (req, res) => {
   console.log(req.body);
 
-  const { noteTile, noteBody } = req.body;
+  const { noteTitle, noteBody } = req.body;
 
   if (req.body) {
     const newNote = {
@@ -60,5 +60,6 @@ router.post('/', (req, res) => {
     res.error('Error in adding note');
   }
 });
-module.exports = router;
+
+module.exports = notes;
 //module.exports = notes;
