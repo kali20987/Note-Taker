@@ -1,36 +1,64 @@
-const nt = require('express').Router();
+const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const { readAndAppend, readFromFile } = require('../helpers/fsUtils');
+const {
+  readFromFile,
+  readAndAppend,
+  writeToFile,
+} = require('../helpers/fsUtils');
 
-nt.get('/', (req, res) =>
-  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
-);
 
-nt.post('/', (req, res) => {
-    
-    const { noteTitle, noteBody } = req.body;
-  
-    
-    if (noteTitle && noteBody) {
+router.get('/', (req, res) => {
+  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
+});
+
+
+router.get('/:note_id', (req, res) => {
+  const noteId = req.params.note_id;
+  readFromFile('./db/db.json')
+    .then((data) => JSON.parse(data))
+    .then((json) => {
+      const result = json.filter((note) => note.note_id === noteId);
+      return result.length > 0
+        ? res.json(result)
+        : res.json('No note with that ID');
+    });
+});
+
+
+router.delete('/:note_id', (req, res) => {
+  const noteId = req.params.note_id;
+  readFromFile('./db/db.json')
+    .then((data) => JSON.parse(data))
+    .then((json) => {
       
-      const newNote = {
-        noteTitle,
-        noteBody,
-        note_id: uuidv4(),
-      };
-  
-      readAndAppend(newNote, './db/db.json');
-  
-      const userInput = {
-        status: 'success',
-        body: newNote,
-      };
-  
-      res.json(userInput);
-    } else {
-      res.json('Error in posting note');
-    }
-  });
-  
-  module.exports = nt;
-  module.exports = router;
+      const result = json.filter((note) => note.note_id !== noteId);
+
+     
+      writeToFile('./db/db.json', result);
+
+      
+      res.json(`Item ${noteId} has been deleted 🗑️`);
+    });
+});
+
+
+router.post('/', (req, res) => {
+  console.log(req.body);
+
+  const { noteTile, noteBody } = req.body;
+
+  if (req.body) {
+    const newNote = {
+      noteTitle,
+      noteBody,
+      note_id: uuidv4(),
+    };
+
+    readAndAppend(newNote, './db/db.json');
+    res.json(`Note added successfully 🚀`);
+  } else {
+    res.error('Error in adding note');
+  }
+});
+module.exports = router;
+//module.exports = notes;
