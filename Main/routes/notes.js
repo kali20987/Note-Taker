@@ -4,7 +4,7 @@ const {
   readFromFile,
   readAndAppend,
   writeToFile,
-} = require('./helpers/fsUtils');
+} = require('../helpers/fsUtils');
 
 
 notes.get('/', (req, res) => {
