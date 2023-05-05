@@ -8,13 +8,13 @@ const {
 
 
 notes.get('/', (req, res) => {
-  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
+  readFromFile('../db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
 
 notes.get('/:note_id', (req, res) => {
   const noteId = req.params.note_id;
-  readFromFile('./db/db.json')
+  readFromFile('../db/db.json')
     .then((data) => JSON.parse(data))
     .then((json) => {
       const result = json.filter((note) => note.note_id === noteId);
@@ -49,11 +49,12 @@ notes.post('/', (req, res) => {
 
   if (req.body) {
     const newNote = {
-      noteTitle,
-      noteBody,
+      noteTitle: req.body.noteTitle,
+      noteBody: req.body.noteBody,
       note_id: uuidv4(),
     };
 
+    console.log('Adding note: '+newNote.noteTitle+' '+newNote.noteBody+' '+newNote.note_id);
     readAndAppend(newNote, './db/db.json');
     res.json(`Note added successfully 🚀`);
   } else {

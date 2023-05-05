@@ -24,5 +24,8 @@ app.listen(PORT, () =>
   console.log(`app listening at http://localhost:${PORT} 🚀`)
 );
 
+const notesRouter = require('./routes/notes');
+app.use('/notes', notesRouter);
+
 //module.exports = app;
 //module.exports = app;
