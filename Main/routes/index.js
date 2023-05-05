@@ -4,16 +4,17 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
-
+let getStarted;
 //let windowLocationPathnameNotes = "../public/assets/index.html";
 let windowLocationPathnameNotes = "/notes.html";
 
-console.log('Window location is '+window.location.pathname);
+console.log('line 11 Window location is '+window.location.pathname);
 if (window.location.pathname === windowLocationPathnameNotes) {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
    saveNoteBtn = document.querySelector('.save-note');
    newNoteBtn = document.querySelector('.new-note');
+   getStarted = document.querySelector('#get-started');
  noteList = document.querySelectorAll('.list-container .list-group');
  }
 
@@ -74,6 +75,7 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
+  console.log('line 77 in handleNoteSave');
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
@@ -104,6 +106,7 @@ const handleNoteDelete = (e) => {
 
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
+  console.log('line 107 in handleNoteView');
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
   renderActiveNote();
@@ -111,6 +114,7 @@ const handleNoteView = (e) => {
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
+  console.log('line 114 in handleNewNoteView');
   activeNote = {};
   renderActiveNote();
 };
@@ -126,7 +130,9 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
-  console.log('Window location is '+window.location.pathname);
+  console.log('line 129 Window location is '+window.location.pathname);
+  console.log('line 130 in renderNoteList');
+
   if (window.location.pathname === windowLocationPathnameNotes) {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
@@ -173,7 +179,7 @@ const renderNoteList = async (notes) => {
     noteListItems.push(li);
   });
 
-  console.log('Window location is '+window.location.pathname);
+  console.log('line 178 Window location is '+window.location.pathname);
   if (window.location.pathname === windowLocationPathnameNotes) {
     noteListItems.forEach((note) => noteList[0].append(note));
   }
@@ -181,13 +187,16 @@ const renderNoteList = async (notes) => {
 
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
-console.log('Window location is '+window.location.pathname);
+console.log('line 186 Window location is '+window.location.pathname);
  if (window.location.pathname === windowLocationPathnameNotes) {
    saveNoteBtn.addEventListener('click', handleNoteSave);
    newNoteBtn.addEventListener('click', handleNewNoteView);
    noteTitle.addEventListener('keyup', handleRenderSaveBtn);
   noteText.addEventListener('keyup', handleRenderSaveBtn);
+  getStarted.addEventListener('click', getNotes);
  }
 
 getAndRenderNotes();
+renderNoteList();
+
 //module.exports = router;

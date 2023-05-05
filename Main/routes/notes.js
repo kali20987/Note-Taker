@@ -8,7 +8,10 @@ const {
 
 
 notes.get('/', (req, res) => {
+  console.log('in notes.get');
   readFromFile('../db/db.json').then((data) => res.json(JSON.parse(data)));
+  console.log(data);
+  console.log(res);
 });
 
 
@@ -43,20 +46,19 @@ notes.delete('/:note_id', (req, res) => {
 
 
 notes.post('/', (req, res) => {
-  console.log(req.body);
+  console.log('in notes.post: ' + req.body);
 
   const { noteTitle, noteBody } = req.body;
 
   if (req.body) {
     const newNote = {
-      noteTitle: req.body.noteTitle,
-      noteBody: req.body.noteBody,
+      noteTitle: req.body.title,
+      noteBody: req.body.text,
       note_id: uuidv4(),
     };
-
-    console.log('Adding note: '+newNote.noteTitle+' '+newNote.noteBody+' '+newNote.note_id);
+    console.log('Adding note newNote...: '+newNote.noteTitle+' / '+newNote.noteBody+' / '+newNote.note_id);
     readAndAppend(newNote, './db/db.json');
-    res.json(`Note added successfully 🚀`);
+    res.json(`Note added successfully `);
   } else {
     res.error('Error in adding note');
   }
