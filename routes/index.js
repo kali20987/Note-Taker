@@ -6,7 +6,7 @@ let newNoteBtn;
 let noteList;
 let getStarted;
 //let windowLocationPathnameNotes = "../public/assets/index.html";
-let windowLocationPathnameNotes = "/notes.html";
+let windowLocationPathnameNotes = "/notes";
 
 console.log('line 11 Window location is '+window.location.pathname);
 if (window.location.pathname === windowLocationPathnameNotes) {
